@@ -41,12 +41,13 @@ const ClassicLotteryComponent = (props: any) => {
       <Box
         {...props}
         w={["100vw", "90vw", "340px"]}
+        h={"480px"}
         borderRadius="10px"
         whiteSpace="nowrap"
         bg={colorMode === "dark" ? "black" : "white"}
         border={"1px"}
         borderColor={colorMode === "dark" ? "white" : "black"}
-        p="10px"
+        p="8px"
         m={["10px"]}
       >
         <Box
@@ -54,7 +55,7 @@ const ClassicLotteryComponent = (props: any) => {
           borderRadius="5px"
           border="1px"
           paddingX="15px"
-          minH={"450px"}
+          minH={"462px"}
           borderColor={colorMode === "dark" ? "black" : "black"}
         >
           <Image
@@ -159,7 +160,7 @@ const ButtonContainer = styled.div`
   background: #ffffff;
   border: 2px solid #000000;
   border-radius: 5px;
-  margin: 50px 40px 20px 40px;
+  margin: 100px 40px 20px 40px;
   button {
     font-family: "Ropa Sans";
     font-style: normal;
