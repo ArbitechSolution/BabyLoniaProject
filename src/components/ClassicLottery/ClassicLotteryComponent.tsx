@@ -84,7 +84,14 @@ const ClassicLotteryComponent = (props: any) => {
           </Container>
           <Container style={{ background: "#37A93B" }}>
             <h2>LAST WINNER</h2>
-            <p style={{fontSize: "32px"}}>123456</p>
+            <p
+              style={{
+                fontSize: "32px",
+                textShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+              }}
+            >
+              123456
+            </p>
           </Container>
           <ButtonContainer>
             <button onClick={onOpen}>BUY TICKET</button>

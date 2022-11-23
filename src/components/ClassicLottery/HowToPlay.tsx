@@ -31,7 +31,7 @@ const HowToPlay = (props: any) => {
       <Box
         {...props}
         w={["100vw", "90vw", "428px"]}
-        h={"480px"}
+        minHeight={"480px"}
         borderRadius="10px"
         // whiteSpace="nowrap"
         bg={colorMode === "dark" ? "black" : "white"}
