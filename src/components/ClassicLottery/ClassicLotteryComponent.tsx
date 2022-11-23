@@ -41,12 +41,13 @@ const ClassicLotteryComponent = (props: any) => {
       <Box
         {...props}
         w={["100vw", "90vw", "340px"]}
+        h={"480px"}
         borderRadius="10px"
         whiteSpace="nowrap"
         bg={colorMode === "dark" ? "black" : "white"}
         border={"1px"}
         borderColor={colorMode === "dark" ? "white" : "black"}
-        p="10px"
+        p="8px"
         m={["10px"]}
       >
         <Box
@@ -54,7 +55,7 @@ const ClassicLotteryComponent = (props: any) => {
           borderRadius="5px"
           border="1px"
           paddingX="15px"
-          minH={"450px"}
+          minH={"462px"}
           borderColor={colorMode === "dark" ? "black" : "black"}
         >
           <Image
@@ -65,7 +66,7 @@ const ClassicLotteryComponent = (props: any) => {
             w="140px"
           />
           <Text
-            fontSize={"lg"}
+            fontSize={ "2xl"}
             pl="6px"
             color={colorMode === "dark" ? "#C5C5C5" : ""}
           >
@@ -73,8 +74,8 @@ const ClassicLotteryComponent = (props: any) => {
           </Text>
           <Container style={{ background: "#F0B90B" }}>
             <h2>PRIZE POOL</h2>
-            <p>
-              99,9999000.00 <br /> <span>-$123456.00</span>
+            <p style={{display: 'block'}}>
+              88,888888.00 <br /> <span>~ $ 123456.00</span>
             </p>
           </Container>
           <Container style={{ background: "#B49EF2" }}>
@@ -83,7 +84,14 @@ const ClassicLotteryComponent = (props: any) => {
           </Container>
           <Container style={{ background: "#37A93B" }}>
             <h2>LAST WINNER</h2>
-            <p>123456</p>
+            <p
+              style={{
+                fontSize: "32px",
+                textShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+              }}
+            >
+              123456
+            </p>
           </Container>
           <ButtonContainer>
             <button onClick={onOpen}>BUY TICKET</button>
@@ -108,9 +116,9 @@ const Container = styled.div`
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin: 10px;
+  margin: 10px 8px;
   padding: 10px;
-  min-height: 55px;
+  height: 55px;
 
   border: 1px solid #000000;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -123,12 +131,13 @@ const Container = styled.div`
     line-height: 19px;
     display: flex;
     align-items: center;
-
     color: #000000;
   }
   p {
+    display: flex;
+    align-items: center;
     background: #ffffff;
-    border: 1px solid #f0b90b;
+    border: 1px solid #8E8E8E;
     border-radius: 5px;
     font-family: "Ropa Sans";
     font-style: normal;
@@ -136,15 +145,17 @@ const Container = styled.div`
     font-size: 24px;
     line-height: 26px;
     color: #000000;
-    padding: 8px;
-    max-height: 55px;
+    padding: 0 15px;
+    height: 40px;
     margin-left: 5px;
     span {
-      font-size: 16px;
+      font-size: 12px;
       margin: 0;
       padding: 0;
       position: relative;
-      top: -5px;
+      top: -12px;
+      line-height: 18px;
+      font-weight: 400;
     }
   }
 `;
@@ -156,7 +167,7 @@ const ButtonContainer = styled.div`
   background: #ffffff;
   border: 2px solid #000000;
   border-radius: 5px;
-  margin: 50px 40px 20px 40px;
+  margin: 100px 40px 20px 40px;
   button {
     font-family: "Ropa Sans";
     font-style: normal;

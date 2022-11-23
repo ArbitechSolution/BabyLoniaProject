@@ -24,18 +24,19 @@ const WinningRulesComponent = (props: any) => {
 
   const router = useRouter();
   const result = [8, 5, 1, 4, 7, 6];
-  const a = [8, 5, 2, 4, 2, 6];
+  const a = [8, 5, 1, 3, 7, 6];
   const b = [0, 5, 1, 4, 7, 6];
   return (
     <Stack justifyContent="center" alignItems="center" mb={"100px"}>
       <Box
         {...props}
-        w={["100vw", "90vw", "600px"]}
+        w={["100vw", "90vw", "618px"]}
+        minHeight={"262px"}
         borderRadius="10px"
         bg={colorMode === "dark" ? "black" : "white"}
         border={"1px"}
         borderColor={colorMode === "dark" ? "white" : "black"}
-        p="10px"
+        p="8px"
         m={["10px"]}
       >
         <Box
@@ -44,12 +45,11 @@ const WinningRulesComponent = (props: any) => {
           border="1px"
           paddingX="15px"
           borderColor={colorMode === "dark" ? "black" : "black"}
-          minHeight="250px"
+          minHeight="244px"
         >
           <Text
-            fontSize={"lg"}
-            pl="6px"
-            mt="5px"
+            fontSize={"2xl"}
+            mt="15px"
             color={colorMode === "dark" ? "#C5C5C5" : ""}
           >
             WINNING RULES
@@ -129,12 +129,12 @@ const Container = styled.div`
   justify-content: flex-start;
   align-items: space-around;
 
-  padding: 8px;
+  padding: 0px 0px;
   @media screen and (max-width: 768px) {
     flex-direction: column;
   }
   div {
-    padding: 0 3px;
+    padding: 0;
     p {
       font-family: "Ropa Sans";
       font-style: normal;
@@ -152,9 +152,11 @@ const NumberContainer = styled.div`
   align-items: center;
   text-align: center;
   .resultOf {
+    font-family: "Ropa Sans";
     font-size: 40px;
     position: relative;
     top: 10px;
+    margin-left: 20px;
   }
 `;
 
@@ -163,15 +165,20 @@ const Number = styled.h3`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 30px;
-  width: 30px;
-  border-radius: 5px;
-  margin: 5px;
+  height: 37px;
+  width: 37px;
+  border: 1px solid #000000;
+  box-shadow: inset -2px -2px 3px rgba(0, 0, 0, 0.6);
+  border-radius: 8px;
+  margin: 0 2px 15px;
   color: white;
   -webkit-text-stroke: 0.1px black;
   font-family: "Ropa Sans";
   font-size: 40px;
-  font-weight: bold;
+  font-weight: ;
+  @media screen and (max-width: 768px) {
+    margin: 20px 2px 15px;
+  }
 `;
 
 const ResultContainer = styled.div`
@@ -182,6 +189,7 @@ const ResultContainer = styled.div`
     width: 24px;
   }
   .resultNumber {
+    font-family: "Ropa Sans";
     font-size: 40px;
     line-height: 20px;
   }

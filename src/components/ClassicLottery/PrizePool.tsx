@@ -28,12 +28,13 @@ const PrizePool = (props: any) => {
     <Stack justifyContent="center" alignItems="center" mb={"100px"}>
       <Box
         {...props}
-        w={["100vw", "90vw", "220px"]}
+        w={["100vw", "90vw", "234px"]}
+        minHeight={"262px"}
         borderRadius="10px"
         bg={colorMode === "dark" ? "black" : "white"}
         border={"1px"}
         borderColor={colorMode === "dark" ? "white" : "black"}
-        p="10px"
+        p="8px"
         m={["10px"]}
       >
         <Box
@@ -42,11 +43,10 @@ const PrizePool = (props: any) => {
           border="1px"
           paddingX="15px"
           borderColor={colorMode === "dark" ? "black" : "black"}
-          minHeight="250px"
+          minHeight="244px"
         >
           <Text
-            fontSize={"lg"}
-            pl="6px"
+            fontSize={"2xl"}
             mt="5px"
             color={colorMode === "dark" ? "#C5C5C5" : ""}
           >
@@ -55,7 +55,7 @@ const PrizePool = (props: any) => {
           <Container>
             <h3>DIGITS MATCHED</h3>
 
-            <div className="group">
+            <div>
               <p>Matches first 1: 7.5 %</p>
               <p>Matches first 2: 10 % </p>
               <p>Matches first 3: 12.5 % </p>
@@ -63,7 +63,7 @@ const PrizePool = (props: any) => {
               <p>Matches first 5: 20 %</p>
               <p>Matches all 6: 25 %</p>
             </div>
-            <div className="group">
+            <div>
               <p>Promotions & Marketing: 5% </p>
               <p>Buyback: 5%</p>
             </div>
@@ -80,14 +80,18 @@ const Container = styled.div`
   justify-content: flex-start;
   align-items: space-around;
   font-family: "Ropa Sans";
+  h3 {
+    font-size: 18px;
+    line-height: 19px;
+  }
   div {
-    margin: 5px 0;
+    margin-top: 10px;
     p {
       font-family: "Ropa Sans";
       font-style: normal;
       font-weight: 400;
-      font-size: 18px;
-      line-height: 19px;
+      font-size: 16px;
+      line-height: 17px;
       color: #000000;
     }
   }
