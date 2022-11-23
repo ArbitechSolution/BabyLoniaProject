@@ -121,13 +121,13 @@ const JackpotComponent = (props: any) => {
       <Stack justifyContent="center" alignItems="center">
         <Box
           {...props}
-          w={["100vw", "90vw", "340px"]}
+          w={["100vw", "90vw", "260px"]}
           borderRadius="10px"
           whiteSpace="nowrap"
           bg={colorMode === "dark" ? "black" : "white"}
           border={"1px"}
           borderColor={colorMode === "dark" ? "white" : "black"}
-          p="10px"
+          p="8px"
           m={["10px"]}
         >
           <Box
@@ -149,23 +149,23 @@ const JackpotComponent = (props: any) => {
                 src={Babylonia_Logo.src}
                 className={grayscaleMode === "gray" ? "grayscale" : ""}
                 alt="babylonia logo"
-                marginTop={"8px"}
-                w="140px"
+                marginTop={"15px"}
+                w="120px"
               />
 
               <FaTimes
                 style={{
                   backgroundColor: "white",
                   padding: "1px",
-
-                  fontSize: "25px",
+                  borderRadius: "2px",
+                  fontSize: "20px",
                   cursor: "pointer",
                 }}
                 onClick={props.onClose}
               />
             </div>
             <Text
-              fontSize={"lg"}
+              fontSize={"2xl"}
               pl="6px"
               color={colorMode === "dark" ? "#C5C5C5" : ""}
             >
@@ -181,7 +181,7 @@ const JackpotComponent = (props: any) => {
                     w="24px"
                     h="24px"
                   />
-                  <p>
+                  <p style={{fontSize: 18, margin: 0}}>
                     BABY
                     <AiOutlineDown style={{ cursor: "pointer" }} />
                   </p>
@@ -192,9 +192,9 @@ const JackpotComponent = (props: any) => {
               </Container>
               <Container style={{ background: "#fff", width: "100%" }}>
                 <RowContainer>
-                  <button onClick={() => decreaseNumber()}>{`-`}</button>
+                  <p className="button" onClick={() => decreaseNumber()}>{`-`}</p>
                   <p className="number">{number}</p>
-                  <button onClick={() => increaseNumber()}>{`+`}</button>
+                  <p className="button" onClick={() => increaseNumber()}>{`+`}</p>
                 </RowContainer>
                 <h3
                   style={{ cursor: "pointer" }}
@@ -208,7 +208,7 @@ const JackpotComponent = (props: any) => {
                   Cost <span>0.002123</span> BABY
                 </p>
                 <p style={{ display: "flex", alignItems: "center" }}>
-                  Discount <span>0.01%</span>
+                  Discount &nbsp;<span>0.01%</span>
                   <Tooltip label="Description of the product" fontSize="lg">
                     <AiOutlineInfoCircle
                       style={{
@@ -218,7 +218,7 @@ const JackpotComponent = (props: any) => {
                     />
                   </Tooltip>
                 </p>
-                <p style={{ fontSize: "18px" }}>
+                <p style={{ fontSize: "16px" }}>
                   Total <span>0.002123</span> BABY + gas
                 </p>
               </ColumnContainer>
@@ -276,7 +276,7 @@ const Container = styled.div`
     font-family: "Ropa Sans";
     font-style: normal;
     font-weight: 400;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 15px;
   }
   .number {
@@ -288,7 +288,7 @@ const Container = styled.div`
     font-size: 24px;
     line-height: 26px;
     padding: 5px 8px;
-    min-width: 80px;
+    min-width: 56px;
   }
   h3 {
     font-family: "Ropa Sans";
@@ -315,11 +315,10 @@ const RowContainer = styled.div`
     /* font-size: 14px; */
     line-height: 19px;
   }
-  button {
+  .button {
     cursor: pointer;
-    font-size: 25px;
-    border: none;
-    margin: auto 2px;
+    font-size: 24px;
+    margin: 0px 3px;
   }
 `;
 const ColumnContainer = styled.div`
@@ -336,7 +335,7 @@ const ColumnContainer = styled.div`
     font-family: "Ropa Sans";
     font-style: normal;
     font-weight: 400;
-    font-size: 18px;
+    font-size: 14px;
     line-height: 25px;
     word-spacing: 5px;
   }
