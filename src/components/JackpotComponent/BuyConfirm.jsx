@@ -1,28 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 // import "./BuyConfirm.css";
 
-import {
-  Box,
-  Text,
-  Stack,
-  Image,
-  useColorMode,
-  useDisclosure,
-  Input,
-} from "@chakra-ui/react";
+import { Box, Image, Input, Stack, Text, useColorMode } from "@chakra-ui/react";
 
 // import { TokenAbI, TokenAddress } from "../Utils/token";
 // import { BabyAbI, BabyAddress } from "../Utils/baby";
 // import BabyLogo from "../../Assets/Babylonia_Logo.png";
-import { FaTimes } from "react-icons/fa";
-import Babylonia_Logo from "../../assets/Babylonia_Logo.png";
 import { useAppSelector } from "@hooks";
-import { useRouter } from "next/router";
+import { FaTimes } from "react-icons/fa";
 import styled from "styled-components";
+import Babylonia_Logo from "../../assets/Babylonia_Logo.png";
 
-import { AiOutlineDown, AiOutlineInfoCircle } from "react-icons/ai";
 import { useEthers } from "@usedapp/core";
-import DisconnectedWalet from "@components/TokenList/DisconnectedWalet";
 
 function BuyPointOne(props) {
   // const [open, setOpen] = useState(false);
@@ -267,15 +256,40 @@ function BuyPointOne(props) {
   //   document.getElementById("input").focus();
   // });
   const [number, setNumber] = useState(123312);
+  const [totalBaby, setTotalBaby] = useState(1234.12);
+  const [ticketCount, setTicketCount] = useState(10);
+  const [ticketValues, setTicketValues] = useState([]);
   const { account } = useEthers();
   const grayscaleMode = useAppSelector((state) => state.grayscale.value);
   const { colorMode } = useColorMode();
+
+  const attachZeroNum = (num, index) => {
+    return ("00" + num).slice(-index);
+  };
+
+  const randNumGenerate = () => {
+    let arrayContainer = [];
+    const genNum = Math.floor(Math.random() * 1000000);
+    arrayContainer.push(genNum);
+    for (let counter = 0; counter < ticketCount - 1; counter++) {
+      let newGen = Math.floor(Math.random() * 1000000);
+      while (arrayContainer.lastIndexOf(newGen) !== -1) {
+        newGen = Math.floor(Math.random() * 1000000);
+      }
+      arrayContainer.push(newGen);
+    }
+    setTicketValues(arrayContainer);
+  };
+
+  useEffect(() => {
+    randNumGenerate();
+  }, []);
 
   return (
     <Stack justifyContent="center" alignItems="center">
       <Box
         {...props}
-        w={["100vw", "90vw", "360px"]}
+        w={["100vw", "90vw", "320px"]}
         borderRadius="10px"
         // whiteSpace="nowrap"
         bg={colorMode === "dark" ? "black" : "white"}
@@ -311,46 +325,64 @@ function BuyPointOne(props) {
               style={{
                 backgroundColor: "white",
                 padding: "1px",
-
-                fontSize: "25px",
+                borderRadius: "2px",
+                fontSize: "20px",
                 cursor: "pointer",
               }}
               onClick={props.onClose}
             />
           </div>
-          <Text
-            fontSize={"lg"}
-            pl="6px"
-            textAlign={"center"}
-            color={colorMode === "dark" ? "#C5C5C5" : ""}
-          >
+          <Text fontSize={"2xl"} color={colorMode === "dark" ? "#C5C5C5" : ""}>
             Edit Numbers
           </Text>
           <MainContainer>
             <ColumnContainer>
-              <Text fontSize={"lg"} style={{ display: "flex" }} mb="3px">
-                Total cost: <Text fontWeight={"black"}> 1.11 BABY</Text>
+              <Text style={{ display: "flex", fontSize: "16px" }} mb="3px">
+                Total &nbsp;
+                <Text fontWeight={"black"}> {totalBaby} BABY + gas</Text>
               </Text>
-              <Text>
-                Buy Instantly, chooses random numbers, with no duplicates among
-                your tickets. Prices are set before each round starts, equal to
-                $5 at that time. Purchases are final.
+              <Text fontWeight={"normal"} style={{ fontSize: "12px" }}>
+                Numbers are randomized, without duplicates between your tickets.
+                Tap / Click a number to edit it.
               </Text>
+              <Text fontWeight={"normal"} style={{ fontSize: "12px" }}>
+                Available digits: 0-9
+              </Text>
+              <ButtonContainer>
+                <button onClick={() => randNumGenerate()}>Randomize</button>
+              </ButtonContainer>
               <NumberContainer>
-                {[1, 2, 3, 4, 5, 6, 1, 2, 4, 1].map((item) => (
-                  <Input
-                    key={item}
-                    type="number"
-                    id="input"
-                    placeholder="123456"
-                    className="input"
-                  />
+                {ticketValues?.map((item, i) => (
+                  <Box key={item}>
+                    <p style={{ fontSize: 12, margin: 0 }}>
+                      #{attachZeroNum(i + 1, 3)}
+                    </p>
+                    <Input
+                      key={item}
+                      type="number"
+                      id="input"
+                      className="input"
+                      value={attachZeroNum(item, 6)}
+                    />
+                  </Box>
                 ))}
               </NumberContainer>
             </ColumnContainer>
             <ButtonContainer>
               <button>Confirm & Buy</button>
             </ButtonContainer>
+            <Text
+              style={{
+                fontSize: "24px",
+                textAlign: "start",
+                width: "100%",
+                margin: "10px 0px",
+                cursor: "pointer",
+              }}
+              onClick={props.onClose}
+            >
+              {"<"}-- back
+            </Text>
           </MainContainer>
         </Box>
       </Box>
@@ -372,50 +404,33 @@ const ColumnContainer = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  margin: 10px;
-  padding: 10px;
   width: 100%;
-  h2 {
-    display: flex;
-    font-size: 1rem;
-    font-weight: 400;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    span {
-      font-weight: 600;
-      font-size: 1rem;
-    }
-  }
   p {
     font-family: "Ropa Sans";
     font-style: normal;
     font-weight: 400;
-    font-size: 1rem;
-    line-height: 21px;
   }
 `;
 const NumberContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: flex-start;
   margin: 10px 0;
   width: 100%;
-  max-height: 150px;
+  max-height: 200px;
   overflow-y: scroll;
   scroll-snap-type: proximity;
-  background-color: #eee;
-  border-radius: 10px;
   .input {
-    width: 150px;
-
+    width: 265px;
+    height: 30px;
     align-self: center;
-    margin: 5px;
+    margin-bottom: 10px;
     font-size: 1.2rem;
-    border: #333 1px solid;
+    background: #fff;
+    border: #000 1px solid;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+    letter-spacing: 33px;
   }
 `;
 const ButtonContainer = styled.div`
@@ -425,7 +440,7 @@ const ButtonContainer = styled.div`
   background: #ffffff;
   border: 2px solid #000000;
   border-radius: 5px;
-  margin: 5px 40px 5px 40px;
+  margin: 5px 0px 5px 0px;
   width: 100%;
 
   text-align: center;

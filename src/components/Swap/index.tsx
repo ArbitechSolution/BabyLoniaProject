@@ -161,7 +161,7 @@ const SwapBox = () => {
       // case 4:
       //   return config.contractAddress.presale[4];
       case 56:
-        return config.contractAddress.presale[56];
+        return config.contractAddress.ICO1M1[56];
       // case 97:
       //   return config.contractAddress.presale[97];
       // case 80001:
