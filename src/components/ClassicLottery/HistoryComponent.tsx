@@ -1,16 +1,11 @@
 import {
   Box,
   Flex,
-  Image,
   Stack,
   Text,
   useColorMode,
-  VStack,
-  WrapItem,
   useColorModeValue,
-  Button,
 } from "@chakra-ui/react";
-import Babylonia_Logo from "../../assets/Babylonia_Logo.png";
 import { useAppSelector } from "@hooks";
 import { useRouter } from "next/router";
 import styled from "styled-components";
@@ -65,7 +60,7 @@ const HistoryComponent = (props: any) => {
           </Flex>
           <Container style={{ background: "#F0B90B" }}>
             <h2>PRIZE POOL</h2>
-            <p style={{display: 'block'}}>
+            <p style={{ display: "block" }}>
               88,888888.00 <br /> <span>-$123456.00</span>
             </p>
           </Container>
@@ -78,8 +73,8 @@ const HistoryComponent = (props: any) => {
             <h3>Last</h3>
           </Container>
           <Container style={{ background: "#37A93B" }}>
-            <h2>WINNER WINNER</h2>
-            <p style={{fontSize: "32px"}}>1234356</p>
+            <h2>WINNER NUMBER</h2>
+            <p style={{ fontSize: "32px" }}>1234356</p>
           </Container>
         </Box>
       </Box>
@@ -116,7 +111,7 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     background: #ffffff;
-    border: 1px solid #8E8E8E;
+    border: 1px solid #8e8e8e;
     border-radius: 5px;
     font-family: "Ropa Sans";
     font-style: normal;

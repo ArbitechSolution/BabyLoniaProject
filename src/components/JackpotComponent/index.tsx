@@ -35,7 +35,7 @@ import BuyPointOne from "./BuyConfirm";
 import { ethers } from "ethers";
 
 const JackpotComponent = (props: any) => {
-  const [number, setNumber] = useState(100);
+  const [number, setNumber] = useState(1);
   const { account, chainId } = useEthers();
   const grayscaleMode = useAppSelector((state: any) => state.grayscale.value);
   const { colorMode } = useColorMode();
@@ -121,7 +121,7 @@ const JackpotComponent = (props: any) => {
       <Stack justifyContent="center" alignItems="center">
         <Box
           {...props}
-          w={["100vw", "90vw", "260px"]}
+          w={["100vw", "90vw", "320px"]}
           borderRadius="10px"
           whiteSpace="nowrap"
           bg={colorMode === "dark" ? "black" : "white"}
@@ -166,7 +166,6 @@ const JackpotComponent = (props: any) => {
             </div>
             <Text
               fontSize={"2xl"}
-              pl="6px"
               color={colorMode === "dark" ? "#C5C5C5" : ""}
             >
               Buy Tickets
@@ -181,7 +180,7 @@ const JackpotComponent = (props: any) => {
                     w="24px"
                     h="24px"
                   />
-                  <p style={{fontSize: 18, margin: 0}}>
+                  <p style={{ fontSize: 18, margin: 0 }}>
                     BABY
                     <AiOutlineDown style={{ cursor: "pointer" }} />
                   </p>
@@ -192,9 +191,15 @@ const JackpotComponent = (props: any) => {
               </Container>
               <Container style={{ background: "#fff", width: "100%" }}>
                 <RowContainer>
-                  <p className="button" onClick={() => decreaseNumber()}>{`-`}</p>
+                  <p
+                    className="button"
+                    onClick={() => decreaseNumber()}
+                  >{`-`}</p>
                   <p className="number">{number}</p>
-                  <p className="button" onClick={() => increaseNumber()}>{`+`}</p>
+                  <p
+                    className="button"
+                    onClick={() => increaseNumber()}
+                  >{`+`}</p>
                 </RowContainer>
                 <h3
                   style={{ cursor: "pointer" }}
