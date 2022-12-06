@@ -1,18 +1,33 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 // import "./BuyConfirm.css";
 
-import { Box, Image, Input, Stack, Text, useColorMode } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Stack,
+  Image,
+  useColorMode,
+  useDisclosure,
+  Input,
+} from "@chakra-ui/react";
+import Web3 from "web3";
 
 // import { TokenAbI, TokenAddress } from "../Utils/token";
 // import { BabyAbI, BabyAddress } from "../Utils/baby";
 // import BabyLogo from "../../Assets/Babylonia_Logo.png";
-import { useAppSelector } from "@hooks";
 import { FaTimes } from "react-icons/fa";
-import styled from "styled-components";
 import Babylonia_Logo from "../../assets/Babylonia_Logo.png";
+import { useAppSelector } from "@hooks";
+import { useRouter } from "next/router";
+import styled from "styled-components";
 
+import { AiOutlineDown, AiOutlineInfoCircle } from "react-icons/ai";
 import { useEthers } from "@usedapp/core";
-
+import DisconnectedWalet from "@components/TokenList/DisconnectedWalet";
+import { toast } from "react-toastify";
+import tokenJSON from "../../babies/abis/BABYToken2.json";
+import lotteryJSON from "../../babies/abis/Lottery.json";
+import config from "@config/index";
 function BuyPointOne(props) {
   // const [open, setOpen] = useState(false);
   // const textTitleColor = useColorModeValue("black", "gray.100");
@@ -255,41 +270,90 @@ function BuyPointOne(props) {
   // useEffect(() => {
   //   document.getElementById("input").focus();
   // });
+  const { chainId, account } = useEthers();
+  const [Id, setId] = useState(chainId);
+  const getBabyAddress = () => {
+    if (Id === 80001) {
+      return config.contractAddress.babyToken[80001];
+    } else if (Id === 137) {
+      return config.contractAddress.babyToken[137];
+    }
+  };
+  const getLotteryAddress = () => {
+    if (Id === 80001) {
+      return config.contractAddress.lottery[80001];
+    } else if (Id === 137) {
+      return config.contractAddress.lottery[137];
+    }
+  };
+  let web3 = new Web3();
+  if (typeof window !== "undefined") {
+    web3 = new Web3(window.ethereum);
+  }
+
+  const ITokenContract = new web3.eth.Contract(tokenJSON.abi, getBabyAddress());
+  const ILotteryContract = new web3.eth.Contract(
+    lotteryJSON.abi,
+    getLotteryAddress()
+  );
+  const tokenContract = {
+    address: getBabyAddress(),
+    abi: tokenJSON.abi,
+    contract: ITokenContract,
+    decimals: 18,
+  };
+  const lotteryContract = {
+    address: getLotteryAddress(),
+    abi: lotteryJSON.abi,
+    contract: ILotteryContract,
+    decimals: 18,
+  };
   const [number, setNumber] = useState(123312);
-  const [totalBaby, setTotalBaby] = useState(1234.12);
-  const [ticketCount, setTicketCount] = useState(10);
-  const [ticketValues, setTicketValues] = useState([]);
-  const { account } = useEthers();
   const grayscaleMode = useAppSelector((state) => state.grayscale.value);
   const { colorMode } = useColorMode();
+  const [lotteryNumber, setLotteryNumbers] = useState(props?.eidtLotteryNumber);
 
-  const attachZeroNum = (num, index) => {
-    return ("00" + num).slice(-index);
-  };
-
-  const randNumGenerate = () => {
-    let arrayContainer = [];
-    const genNum = Math.floor(Math.random() * 1000000);
-    arrayContainer.push(genNum);
-    for (let counter = 0; counter < ticketCount - 1; counter++) {
-      let newGen = Math.floor(Math.random() * 1000000);
-      while (arrayContainer.lastIndexOf(newGen) !== -1) {
-        newGen = Math.floor(Math.random() * 1000000);
+  const getBuyTicket = async () => {
+    try {
+      if (account == "No Wallet") {
+        toast.info("Not Connected");
+      } else if (account == "Wrong Network") {
+        toast.info("Not Connected");
+      } else if (account == "Connect Wallet") {
+        toast.info("Not Connected");
+      } else {
+        const id = await lotteryContract.contract.methods
+          .viewCurrentLotteryId()
+          .call();
+        console.log("viewCurrentLotteryId in edit and buy", id);
+        let array = [];
+        array = lotteryNumber;
+        console.log("array", array);
+        const result = await lotteryContract.contract.methods
+          .buyTickets(id, array)
+          .send({ from: account });
+        toast.success("Transaction Sucessful");
       }
-      arrayContainer.push(newGen);
+    } catch (error) {
+      toast.error("Transaction Failed");
+      console.log("error while getting baby balance", error);
     }
-    setTicketValues(arrayContainer);
   };
-
-  useEffect(() => {
-    randNumGenerate();
-  }, []);
-
+  const handleChangeLotteryNumber = (e, targetIndex) => {
+    let newArray = lotteryNumber.map((item, index) => {
+      if (index == targetIndex) {
+        return Number((item = e.target.value));
+      } else {
+        return item;
+      }
+    });
+    setLotteryNumbers(newArray);
+  };
   return (
     <Stack justifyContent="center" alignItems="center">
       <Box
         {...props}
-        w={["100vw", "90vw", "320px"]}
+        w={["100vw", "90vw", "360px"]}
         borderRadius="10px"
         // whiteSpace="nowrap"
         bg={colorMode === "dark" ? "black" : "white"}
@@ -325,64 +389,57 @@ function BuyPointOne(props) {
               style={{
                 backgroundColor: "white",
                 padding: "1px",
-                borderRadius: "2px",
-                fontSize: "20px",
+
+                fontSize: "25px",
                 cursor: "pointer",
               }}
               onClick={props.onClose}
             />
           </div>
-          <Text fontSize={"2xl"} color={colorMode === "dark" ? "#C5C5C5" : ""}>
+          <Text
+            fontSize={"lg"}
+            pl="6px"
+            textAlign={"center"}
+            color={colorMode === "dark" ? "#C5C5C5" : ""}
+          >
             Edit Numbers
           </Text>
           <MainContainer>
             <ColumnContainer>
-              <Text style={{ display: "flex", fontSize: "16px" }} mb="3px">
-                Total &nbsp;
-                <Text fontWeight={"black"}> {totalBaby} BABY + gas</Text>
+              <Text fontSize={"lg"} style={{ display: "flex" }} mb="3px">
+                Total cost: <Text fontWeight={"black"}> 1.11 BABY</Text>
               </Text>
-              <Text fontWeight={"normal"} style={{ fontSize: "12px" }}>
-                Numbers are randomized, without duplicates between your tickets.
-                Tap / Click a number to edit it.
+              <Text>
+                Buy Instantly, chooses random numbers, with no duplicates among
+                your tickets. Prices are set before each round starts, equal to
+                $5 at that time. Purchases are final.
               </Text>
-              <Text fontWeight={"normal"} style={{ fontSize: "12px" }}>
-                Available digits: 0-9
-              </Text>
-              <ButtonContainer>
-                <button onClick={() => randNumGenerate()}>Randomize</button>
-              </ButtonContainer>
               <NumberContainer>
-                {ticketValues?.map((item, i) => (
-                  <Box key={item}>
-                    <p style={{ fontSize: 12, margin: 0 }}>
-                      #{attachZeroNum(i + 1, 3)}
-                    </p>
-                    <Input
-                      key={item}
+                {lotteryNumber &&
+                  lotteryNumber.map((item, index) => (
+                    <input
+                      key={index}
                       type="number"
-                      id="input"
+                      // id="input"
+                      placeholder="123456"
                       className="input"
-                      value={attachZeroNum(item, 6)}
+                      value={item}
+                      onChange={(item) => {
+                        handleChangeLotteryNumber(item, index);
+                      }}
                     />
-                  </Box>
-                ))}
+                  ))}
               </NumberContainer>
             </ColumnContainer>
             <ButtonContainer>
-              <button>Confirm & Buy</button>
+              <button
+                onClick={() => {
+                  getBuyTicket();
+                }}
+              >
+                Confirm & Buy
+              </button>
             </ButtonContainer>
-            <Text
-              style={{
-                fontSize: "24px",
-                textAlign: "start",
-                width: "100%",
-                margin: "10px 0px",
-                cursor: "pointer",
-              }}
-              onClick={props.onClose}
-            >
-              {"<"}-- back
-            </Text>
           </MainContainer>
         </Box>
       </Box>
@@ -404,33 +461,50 @@ const ColumnContainer = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  margin: 10px;
+  padding: 10px;
   width: 100%;
+  h2 {
+    display: flex;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    span {
+      font-weight: 600;
+      font-size: 1rem;
+    }
+  }
   p {
     font-family: "Ropa Sans";
     font-style: normal;
     font-weight: 400;
+    font-size: 1rem;
+    line-height: 21px;
   }
 `;
 const NumberContainer = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: flex-start;
   margin: 10px 0;
   width: 100%;
-  max-height: 200px;
+  max-height: 150px;
   overflow-y: scroll;
   scroll-snap-type: proximity;
+  background-color: #eee;
+  border-radius: 10px;
   .input {
-    width: 265px;
-    height: 30px;
+    width: 150px;
+
     align-self: center;
-    margin-bottom: 10px;
+    margin: 5px;
     font-size: 1.2rem;
-    background: #fff;
-    border: #000 1px solid;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 5px;
-    letter-spacing: 33px;
+    border: #333 1px solid;
   }
 `;
 const ButtonContainer = styled.div`
@@ -440,7 +514,7 @@ const ButtonContainer = styled.div`
   background: #ffffff;
   border: 2px solid #000000;
   border-radius: 5px;
-  margin: 5px 0px 5px 0px;
+  margin: 5px 40px 5px 40px;
   width: 100%;
 
   text-align: center;
